@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BikeCoach AI - Android Beta</title>
+  <meta name="description" content="BikeCoach AI - personalized cycling training plans + GPS recording. Android: beta testing. iOS: coming soon." />
+  <meta name="theme-color" content="#0D1110" />
+
+  <!-- Use the same icon as the Android app -->
+  <link rel="icon" type="image/png" href="assets/app_logo.png" />
+  <link rel="apple-touch-icon" href="assets/app_logo.png" />
+
+  <style>
+    :root{
+      --bg:#0D1110;
+      --surface:#141A18;
+      --surface2:#1A211E;
+      --text:#E6ECEA;
+      --muted:#A8B3AF;
+      --line:rgba(255,255,255,.12);
+      --brand:#10B981;
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --radius:18px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background:
+        radial-gradient(900px 500px at 15% -10%, rgba(16,185,129,.18), transparent 55%),
+        radial-gradient(700px 400px at 90% 10%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, #0A0C0B 0%, #0D1110 45%, #0A0C0B 100%);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 64px}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:10px 4px 22px;
+      position:sticky; top:0; backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(13,17,16,.85), rgba(13,17,16,0));
+      z-index:5;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      min-width: 240px;
+    }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      border:1px solid var(--line);
+      box-shadow: 0 8px 26px rgba(0,0,0,.35);
+      overflow:hidden;
+      background:#0D1110;
+      display:block;
+      flex: 0 0 auto;
+    }
+    .logo img{width:100%; height:100%; object-fit:cover; display:block;}
+    .brand b{letter-spacing:.2px}
+    .pill{
+      font-size:12px; color:var(--muted);
+      padding:6px 10px; border:1px solid var(--line);
+      border-radius:999px; background:rgba(255,255,255,.03);
+      display:inline-block;
+      margin-top:4px;
+    }
+    .maker{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+      padding:16px;
+    }
+    .makerLeft{display:flex; align-items:center; gap:12px;}
+    .avatar{
+      width:46px; height:46px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+      background:#0D1110;
+      flex:0 0 auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+    .maker small{color:var(--muted); display:block; margin-top:2px; font-weight:600;}
+    .hero{
+      display:grid; grid-template-columns: 1.1fr .9fr;
+      gap:22px; align-items:stretch;
+      padding:18px 0 10px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+    }
+    .heroMain{padding:22px}
+    h1{
+      margin:0 0 10px;
+      font-size: 42px; line-height:1.05; letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0 0 18px; color:var(--muted);
+      font-size:16px; line-height:1.55;
+    }
+    .badges{display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 18px}
+    .badge{
+      display:flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      background:rgba(16,185,129,.10);
+      border:1px solid rgba(16,185,129,.22);
+      color: #CFF7E8;
+      font-size:13px;
+    }
+    .badge small{color:rgba(207,247,232,.78); font-weight:600}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      border-radius:14px; padding:12px 14px;
+      border:1px solid var(--line);
+      text-decoration:none;
+      font-weight:800;
+      transition:.15s transform ease, .15s background ease, .15s border-color ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btnPrimary{
+      background: linear-gradient(180deg, rgba(16,185,129,.95), rgba(16,185,129,.85));
+      border-color: rgba(16,185,129,.5);
+      color:#061E15;
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+    }
+    .note{margin:10px 0 0; font-size:12px; color:var(--muted);}
+    .heroSide{padding:18px}
+    .preview{
+      height:100%; padding:16px; border-radius:16px;
+      background:
+        radial-gradient(900px 400px at 20% 0%, rgba(16,185,129,.18), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      display:grid; gap:12px;
+      align-content:start;
+    }
+    .mockTop{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .chip{
+      font-size:12px; padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+    }
+    .statGrid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+    .stat{
+      padding:12px; border-radius:14px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .stat b{display:block; font-size:18px; letter-spacing:-.2px}
+    .stat span{color:var(--muted); font-size:12px}
+    .miniList{display:grid; gap:8px}
+    .miniRow{
+      padding:12px; border-radius:14px;
+      background: rgba(0,0,0,.16);
+      border:1px solid rgba(255,255,255,.08);
+      display:flex; justify-content:space-between; gap:10px;
+    }
+    .miniRow i{color:var(--muted); font-style:normal}
+    .section{padding:18px 0}
+    .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .feature{padding:16px}
+    .feature h3{margin:0 0 8px; font-size:16px}
+    .feature p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    .faq{padding:16px}
+    details{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      border-radius:14px;
+      padding:12px 14px;
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:800}
+    details p{margin:8px 0 0; color:var(--muted); line-height:1.6; font-size:13px}
+    footer{
+      margin-top:22px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:12px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr; }
+      h1{font-size:36px}
+      .grid3{grid-template-columns:1fr}
+      .statGrid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="BikeCoach AI">
+        <span class="logo" aria-hidden="true">
+          <img src="assets/app_logo.png" alt="" />
+        </span>
+        <span>
+          <b>BikeCoach AI</b><br />
+          <span class="pill">Android: beta testing | iOS: coming soon</span>
+        </span>
+      </a>
+
+      <a class="btn btnGhost" href="#download">Download</a>
+    </header>
+
+    <main id="top" class="hero">
+      <section class="card heroMain">
+        <h1>Train smarter.<br>Record GPS.<br>Hit your goals.</h1>
+        <p class="sub">
+          BikeCoach AI builds personalized cycling plans based on your selected dates and goal
+          (speed or distance), helps you check off completed sessions, and records your route via GPS.
+        </p>
+
+        <div class="badges">
+          <div class="badge">
+            <span aria-hidden="true">*</span>
+            <div><b>Training plan</b> <small>from your dates</small></div>
+          </div>
+          <div class="badge">
+            <span aria-hidden="true">*</span>
+            <div><b>GPS recording</b> <small>pause/finish</small></div>
+          </div>
+          <div class="badge">
+            <span aria-hidden="true">*</span>
+            <div><b>Export</b> <small>GPX + JPG</small></div>
+          </div>
+        </div>
+
+        <div class="ctaRow" id="download">
+          <!-- Replace with your APK link, e.g. ./downloads/BikeCoach-beta.apk -->
+          <a class="btn btnPrimary" href="downloads/BikeCoach-beta.apk" download>
+            Download APK (Android beta)
+          </a>
+          <!-- Optional: Telegram/Discord/feedback form -->
+          <a class="btn btnGhost" href="YOUR_FEEDBACK_URL_HERE" target="_blank" rel="noopener">
+            Send feedback
+          </a>
+        </div>
+
+        <p class="note">
+          Android build is currently in beta testing. iOS version is coming soon.
+        </p>
+      </section>
+
+      <aside class="card heroSide" aria-label="App preview">
+        <div class="preview">
+          <div class="mockTop">
+            <span class="chip">Dark-first</span>
+            <span class="chip">Android 10+</span>
+          </div>
+
+          <div class="statGrid">
+            <div class="stat">
+              <b>Plans</b>
+              <span>Only on selected training dates</span>
+            </div>
+            <div class="stat">
+              <b>Progress</b>
+              <span>Only checked sessions are saved</span>
+            </div>
+          </div>
+
+          <div class="miniList" aria-label="Workout types">
+            <div class="miniRow">
+              <div><b>Easy</b> <i>recovery</i></div>
+              <div class="chip">Zone 2</div>
+            </div>
+            <div class="miniRow">
+              <div><b>Tempo</b> <i>steady</i></div>
+              <div class="chip">threshold</div>
+            </div>
+            <div class="miniRow">
+              <div><b>Long</b> <i>endurance</i></div>
+              <div class="chip">+10%</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <section class="section">
+      <div class="grid3">
+        <div class="card feature">
+          <h3>Calendar-based planning</h3>
+          <p>Select multiple dates freely or add weekdays. Your plan is generated only for the training days you choose.</p>
+        </div>
+        <div class="card feature">
+          <h3>Goal-driven structure</h3>
+          <p>Pick Р Р†Р вЂљРЎС™DistanceР Р†Р вЂљРЎСљ or Р Р†Р вЂљРЎС™SpeedР Р†Р вЂљРЎСљ. Workouts are simple and clear: easy/tempo/long/intervals, with safe progression.</p>
+        </div>
+        <div class="card feature">
+          <h3>Route recording</h3>
+          <p>GPS recording with pause/resume/finish. Export GPX and share a JPG image of your route.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="card feature" style="padding:18px;">
+        <h3 style="margin:0 0 8px;">AI without Internet</h3>
+        <p style="margin:0; color:var(--muted); line-height:1.7;">
+          BikeCoach AI works fully offline. Your training plan is generated on-device using built-in rules
+          (safe progression, workout types, rest-day logic), so it does not send your data to any server
+          and does not require an API key.
+        </p>
+
+        <div style="height:14px;"></div>
+
+        <h3 style="margin:0 0 8px;">How we built it</h3>
+        <p style="margin:0; color:var(--muted); line-height:1.7;">
+          We replaced cloud AI with a local planner: the app collects your goal (speed or distance),
+          your current level, your target, and the training dates you select. Then it generates workouts
+          only for those dates, applies gradual progression, and marks extra sessions as optional once
+          the goal is reached. Everything is stored locally on your phone.
+        </p>
+
+        <div class="badges" style="margin:14px 0 0;">
+          <div class="badge"><span aria-hidden="true">*</span><div><b>Offline</b> <small>no internet needed</small></div></div>
+          <div class="badge"><span aria-hidden="true">*</span><div><b>Private</b> <small>local data only</small></div></div>
+          <div class="badge"><span aria-hidden="true">*</span><div><b>No API keys</b> <small>no setup</small></div></div>
+        </div>
+      </div>
+    </section>    <section class="section card faq" aria-label="FAQ">
+      <h2 style="margin:0 0 10px; font-size:18px;">FAQ</h2>
+
+      <details>
+        <summary>Is this the final release?</summary>
+        <p>No. The Android version is currently in beta testing, so UI and features may change. iOS is coming soon.</p>
+      </details>
+
+      <details>
+        <summary>How do I install the APK?</summary>
+        <p>Download the APK, open it on your phone, and allow installs from unknown sources for your browser or file manager when prompted.</p>
+      </details>
+
+      <details>
+        <summary>Do I need any API keys for maps?</summary>
+        <p>No. The app uses OpenStreetMap and does not require Google Maps API keys.</p>
+      </details>
+    </section>
+
+
+    <section class="section">
+      <div class="card maker" aria-label="Built by">
+        <div class="makerLeft">
+          <span class="avatar" aria-hidden="true"><img src="assets/avatar.png" alt="" /></span>
+          <div>
+            <b>Built by the BikeCoach team</b>
+            <small>Android beta is live. iOS is coming soon.</small>
+          </div>
+        </div>
+        <a class="btn btnGhost" href="#download">Get the beta</a>
+      </div>
+    </section>    <footer>
+      <div>Р вЂ™Р’В© <span id="year"></span> BikeCoach AI</div>
+      <div>
+        <a href="#download">Download</a> Р вЂ™|
+        <a href="YOUR_PRIVACY_URL_HERE" target="_blank" rel="noopener">Privacy</a> Р вЂ™|
+        <a href="YOUR_CONTACT_URL_HERE" target="_blank" rel="noopener">Contact</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
